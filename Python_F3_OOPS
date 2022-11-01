@@ -1,5 +1,8 @@
-https://www.youtube.com/playlist?list=PL-osiE80TeTsqhIuOqKhwlXsIBIdSeYtc
-
+Uses - 
+1. Code Optimization.
+2. Reusability of code.
+3. Proper flow of program
+4. Memory optimization
 
 Description - 
 
@@ -8,3 +11,33 @@ Description -
 3. Attributes
 4. Methods
 5. Costructor - Initialize the arguments.
+
+
+#####################################################################################################################################
+# Eg. 1
+
+class Employee:                                                     -- Class Variable
+    def __init__(self, first, last, pay):                           -- Initializing argument, self is Instance
+        self.first = first                                        
+        self.last = last
+        self.email = first + '.' + last + '@email.com'
+        self.pay = pay
+
+    def fullname(self):                                             -- Class Method
+        return '{} {}'.format(self.first, self.last)
+
+emp_1 = Employee('Corey', 'Schafer', 50000)                         -- Optimized way to code / Store the data in better format & code.
+emp_2 = Employee('Test', 'Employee', 60000)
+#####################################################################################################################################
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+Credits - https://www.youtube.com/playlist?list=PL-osiE80TeTsqhIuOqKhwlXsIBIdSeYtc
+          https://github.com/CoreyMSchafer
+-----------------------------------------------------------------------------------------
