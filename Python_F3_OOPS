@@ -14,23 +14,85 @@ Description -
 
 
 #####################################################################################################################################
-# Eg. 1
+# Eg. 1 = Instance Variables
 
-class Employee:                                                     -- Class Variable
+class Employee:                                                
     def __init__(self, first, last, pay):                           -- Initializing argument, self is Instance
         self.first = first                                        
         self.last = last
-        self.email = first + '.' + last + '@email.com'
+        self.email = first + '.' + last + '@email.com'              -- Instance Variables (self. ) - Dynamic to each Instance
         self.pay = pay
 
-    def fullname(self):                                             -- Class Method
+    def fullname(self):                                             -- Class Method ( Function within class )
         return '{} {}'.format(self.first, self.last)
 
 emp_1 = Employee('Corey', 'Schafer', 50000)                         -- Optimized way to code / Store the data in better format & code.
 emp_2 = Employee('Test', 'Employee', 60000)
 #####################################################################################################################################
 
+# Eg. 2 = Class Variables
 
+class Employee:
+
+    num_of_emps = 0                                                -- Class Variables ( Constant through class if not specified exclusively in Instance )
+    raise_amt = 1.04
+
+    def __init__(self, first, last, pay):
+        self.first = first
+        self.last = last
+        self.email = first + '.' + last + '@email.com'
+        self.pay = pay
+
+        Employee.num_of_emps += 1                                 -- Class Variables ( No self. according to use case - No dynamic updation required )
+
+    def fullname(self):
+        return '{} {}'.format(self.first, self.last)
+
+    def apply_raise(self):
+        self.pay = int(self.pay * self.raise_amt)                 -- Class Variables ( self. according to use case - dynamic updation required )
+
+    @classmethod
+    def set_raise_amt(cls, amount):
+        cls.raise_amt = amount
+
+    @classmethod
+    def from_string(cls, emp_str):
+        first, last, pay = emp_str.split('-')
+        return cls(first, last, pay)
+
+    @staticmethod
+    def is_workday(day):
+        if day.weekday() == 5 or day.weekday() == 6:
+            return False
+        return True
+
+
+#########################################################################################
+## Checking Master Class Variable
+
+print(Employee.num_of_emps)  #- 0
+emp_1 = Employee('Corey', 'Schafer', 50000)
+print(Employee.num_of_emps)  #- 1
+emp_2 = Employee('Test', 'Employee', 60000)
+print(Employee.num_of_emps)  #- 2
+
+########################################################################################
+## Checking Regular Class Variable
+
+emp_1 = Employee('Corey', 'Schafer', 50000)
+emp_2 = Employee('Test', 'Employee', 60000)
+
+print(emp_1.__dict__) # - ( No raise_amount )
+print(emp_2.__dict__) # - ( No raise_amount ) 
+print(Employee.__dict__) # - ( Globally declared raise_amount )
+
+emp_1.raise_amount = 1.05
+
+print(Employee.raise_amount) # - 1.04
+print(emp_1.raise_amount)    # - 1.05 ( Dynamically changed )
+print(emp_2.raise_amount)    # - 1.04 ( Fetched from global if not declared specifically )
+
+#####################################################################################################################################
 
 
 
