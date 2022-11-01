@@ -1,0 +1,15 @@
+# To find the Linux os and version, etc - 
+cat /etc/os-release
+
+# Search File globally
+find / -name "filename"
+
+# Enter Superuser 
+sudo bash
+
+# Running scripts using Superuser rights
+bash filename.sh
+
+# Check all open ports 
+netstat -tulpn | grep LISTEN
+

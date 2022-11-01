@@ -1,0 +1,122 @@
+"MySQL"
+
+Enter Into Putty Server :  Putty Credentials
+Enter Into mysql Server :  mysql Credentials
+
+To Show Databases : show databases;
+To use DB : use DB_name;
+To Show Tables : show tables;
+To use tables : select * from table_name limit 10\G;
+To Describe tables : desc table_name;
+(Coulmn names, type, etc)
+
+
+"MSSQL"
+To Show Databases : "SELECT name FROM master.dbo.sysdatabases;
+To use DB : use DB_name;
+To Show Tables : Select name AS 'Table Name' From sys.tables;
+To use tables : select top 10 * from table_name;
+To Describe tables : desc table_name;
+(Coulmn names, type, etc)
+
+-----------------------------------------------------------------------------------------------------------------------------
+"Create a MySQL Table"
+
+create table TABLE_NAME(
+   id INT NOT NULL AUTO_INCREMENT,
+   title VARCHAR(100) NOT NULL,
+   author VARCHAR(40) NOT NULL,
+   submission_date DATE,
+   PRIMARY KEY ( id )
+);
+
+-----------------------------------------------------------------------------------------------------------------------------
+"Loop_All_Tables"
+
+SELECT GROUP_CONCAT(t.query SEPARATOR '; ')
+FROM
+(
+	SELECT CONCAT('ALTER TABLE ',table_schema,'.', a.table_name,
+		' ADD COLUMN id INT AUTO_INCREMENT NOT NULL PRIMARY KEY FIRST') AS query,
+        '1' AS id
+		FROM information_schema.tables a
+		WHERE table_schema = 'tsdaily' 
+) t
+GROUP BY t.id
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+"Length of VARCHAR"
+
+Get Total Length = LENGTH(CITY) 
+Unique length = LENGTH(Distinct CITY)
+
+Problem : Sample Input - Let's say that CITY only has four entries: DEF, ABC, PQRS and WXY
+Sample Output :  ABC 3 , PQRS 4
+
+Anser - SELECT CITY,LENGTH(CITY) FROM STATION ORDER BY LENGTH(CITY) ASC,CITY ASC LIMIT 1;
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+"Advance Joins"
+
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+SELECT COUNT(diy_stuck.Probability),diy_stuck.`Form filled on`,
+           Accounts_analysis_final.`Accounts created`, 
+           Accounts_analysis_final.`Accounts Logged in`,  
+           Accounts_analysis_final.`Users not added (Accounts)` 
+FROM AccountQuality.diy_stuck LEFT JOIN AccountQuality.Accounts_analysis_final 
+ON Date(STR_TO_DATE(diy_stuck.`Form filled on`,'%Y-%m-%d')) = Date(Date_Format(Accounts_analysis_final.`Date`,'%Y-%m-%d'))
+GROUP BY Date(STR_TO_DATE(diy_stuck.`Form filled on`,'%Y-%m-%d'));
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+"Restoring Table"
+
+sed -n -e '/DROP TABLE.*`table_name`/,/UNLOCK TABLES/p' /Source/Dump.sql > Backup.sql
+sudo mysql --user=root --password=password DB_Name< /Source/Backup.sql
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+"Convert Table Encoding "
+
+ALTER TABLE DB_Name.table_name CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+"Grouping - Column Categories as Columns "
+
+SELECT company_id,user_id, 
+GROUP_CONCAT( DISTINCT punchin_time) 
+as "Dates"  
+from attendance where DATE(punchin_time) >= DATE(CURDATE() - INTERVAL 8 DAY) group by user_id;
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+"Restart Mysql"
+sudo /etc/init.d/mysql restart
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+"IF-ELSE conditions on multiple columns
+
+SELECT TOP (100) 
+      [contactemail]
+      ,[contactphone],
+	    CASE 
+	    WHEN [contactemail] !='' and [contactphone] !='' THEN 'Email+Mobile'
+            WHEN [contactemail] !='' and [contactphone] ='' THEN 'Email Only'
+            WHEN [contactemail] ='' and [contactphone] !='' THEN 'Mobile Only'
+            ELSE 'None'
+          END as 'EM-Tag'
+  FROM [DBNAME].[dbo].[TABLE_Name]
+-----------------------------------------------------------------------------------------------------------------------------
