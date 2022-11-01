@@ -1,1 +1,11 @@
+## Pandas
+
+Important Library for Data handling / transformation / manipulation, etc.
+( Higher records with similar functionality can be processed through DASK / VAEX / PySpark )
+
+
+
+## Numpy ( Numeric Python )
+
+Important Library for Matematical operations ( Basic to Advance - Array Vectors / Matrix, etc. )
 
