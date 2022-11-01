@@ -11,9 +11,10 @@ Description -
 3. Attributes
 4. Methods
 5. Costructor - Initialize the arguments.
+6. Decorator  - 
 
 
-#####################################################################################################################################
+###############################################################################################################################################################################
 # Eg. 1 = Instance Variables
 
 class Employee:                                                
@@ -28,7 +29,8 @@ class Employee:
 
 emp_1 = Employee('Corey', 'Schafer', 50000)                         -- Optimized way to code / Store the data in better format & code.
 emp_2 = Employee('Test', 'Employee', 60000)
-#####################################################################################################################################
+
+###############################################################################################################################################################################
 
 # Eg. 2 = Class Variables
 
@@ -50,22 +52,6 @@ class Employee:
 
     def apply_raise(self):
         self.pay = int(self.pay * self.raise_amt)                 -- Class Variables ( self. according to use case - dynamic updation required )
-
-    @classmethod
-    def set_raise_amt(cls, amount):
-        cls.raise_amt = amount
-
-    @classmethod
-    def from_string(cls, emp_str):
-        first, last, pay = emp_str.split('-')
-        return cls(first, last, pay)
-
-    @staticmethod
-    def is_workday(day):
-        if day.weekday() == 5 or day.weekday() == 6:
-            return False
-        return True
-
 
 #########################################################################################
 ## Checking Master Class Variable
@@ -92,7 +78,73 @@ print(Employee.raise_amount) # - 1.04
 print(emp_1.raise_amount)    # - 1.05 ( Dynamically changed )
 print(emp_2.raise_amount)    # - 1.04 ( Fetched from global if not declared specifically )
 
-#####################################################################################################################################
+###############################################################################################################################################################################
+
+# Eg. 3 = Types of Methods - 
+
+class Employee:
+    raise_amt = 1.04
+
+    def __init__(self, first, last, pay):
+        self.first = first
+        self.last = last
+        self.email = first + '.' + last + '@email.com'
+        self.pay = pay
+
+    @classmethod                                                     -- Regular Instance Method
+    def set_raise_amt(cls, amount):
+        cls.raise_amt = amount
+
+    @classmethod                                                     -- Class Methods ( AKA Alternative Constructors )
+    def from_string(cls, emp_str):
+        first, last, pay = emp_str.split('-')
+        return cls(first, last, pay)
+
+    @staticmethod                                                    -- Static Method ( Don't operate on the Instance or the Class ) - Independent Functions
+    def is_workday(day):
+        if day.weekday() == 5 or day.weekday() == 6:
+            return False
+        return True
+
+
+emp_1 = Employee('Corey', 'Schafer', 50000)
+emp_2 = Employee('Test', 'Employee', 60000)
+
+#########################################################################################
+## Regular Instance Method ( Works like normal instance method - Not used much )
+
+Employee.set_raise_amt(1.05)
+
+print(Employee.raise_amt)
+print(emp_1.raise_amt)
+print(emp_2.raise_amt)
+#########################################################################################
+## Class Methods ( AKA Alternative Constructors - When the input to class data needs to be processed & instance need to be created )
+
+emp_str_1 = 'John-Doe-70000'
+emp_str_2 = 'Steve-Smith-30000'
+emp_str_3 = 'Jane-Doe-90000'
+
+first, last, pay = emp_str_1.split('-')
+
+#new_emp_1 = Employee(first, last, pay)
+new_emp_1 = Employee.from_string(emp_str_1)
+
+print(new_emp_1.email)
+print(new_emp_1.pay)
+
+#########################################################################################
+## Static Method ( Don't operate on the Instance or the Class ) - Independent Functions 
+   When there is no relation to use in class / instance for calculation.
+
+import datetime
+my_date = datetime.date(2016, 7, 11)
+
+print(Employee.is_workday(my_date))
+
+###############################################################################################################################################################################
+
+
 
 
 
