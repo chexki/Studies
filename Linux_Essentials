@@ -1,6 +1,9 @@
 # To find the Linux os and version, etc - 
 cat /etc/os-release
 
+# Create File in ubuntu
+touch 'filename.extension'
+
 # Search File globally
 find / -name "filename"
 
@@ -12,4 +15,8 @@ bash filename.sh
 
 # Check all open ports 
 netstat -tulpn | grep LISTEN
+
+# For running a python script in background ( server usage )
+nohup python /location/file.py > /location/logs.out &
+
 
